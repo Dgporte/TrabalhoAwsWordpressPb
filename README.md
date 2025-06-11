@@ -305,3 +305,38 @@ Aguarde até que o status do EFS mude para “Disponível” para começar a uti
 ![EFS sendo criado](assests/EFS/EFSCRIADO.png)
 
 ---
+
+## 32. Por que criar um NAT Gateway?
+
+O NAT Gateway (Network Address Translation) é essencial para que recursos em subnets privadas (como instâncias EC2, bancos de dados ou containers) possam acessar a internet para baixar atualizações e pacotes, sem ficarem expostos a acessos externos. Ele garante que o tráfego de saída dessas instâncias passe pelo NAT, mantendo a segurança da arquitetura.
+
+![Página NAT Gateway](assests/NATGATEWAY/Page1Nat.png)
+
+---
+
+## 33. Página do NAT Gateway
+
+Esta é a página onde você pode visualizar e gerenciar os NAT Gateways da sua VPC. Clique em “Criar NAT gateway” para iniciar o processo.
+
+![Página NAT Gateway](assests/NATGATEWAY/Page2Nat.png)
+
+---
+
+## 34. Página de Criação do NAT Gateway
+
+Na tela de criação, preencha os seguintes campos:
+
+- **Nome:** Escolha um nome para identificar facilmente o NAT Gateway.
+- **Subnet:** Selecione a sua subnet pública principal (por exemplo, “publica01”). O NAT Gateway precisa estar em uma subnet pública para acessar a internet.
+- **Tipo de conectividade:** Deixe como “Pública” para garantir acesso externo.
+- **IP elástico:** Clique em “Alocar novo IP elástico”. Isso garante que o NAT Gateway terá um endereço IP público fixo, necessário para comunicação com a internet.
+- Por fim, clique em “Criar NAT gateway”.
+
+![Configuração NAT Gateway](assests/NATGATEWAY/Page3Nat.png)
+
+---
+
+**Resumo dos passos:**  
+Essas configurações garantem que todas as instâncias nas subnets privadas possam acessar a internet de forma segura e controlada, sem ficarem expostas diretamente a acessos externos.
+
+---
