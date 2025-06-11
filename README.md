@@ -250,7 +250,7 @@ O Amazon EFS (Elastic File System) permite que várias instâncias EC2 compartil
 
 Esta é a página inicial do serviço EFS, onde você pode visualizar e criar sistemas de arquivos.
 
-![Página Principal EFS](assets/imagem26.png)
+![Página Principal EFS](assests/EFS/PagePrincipalEFS.png)
 
 ---
 
@@ -258,7 +258,7 @@ Esta é a página inicial do serviço EFS, onde você pode visualizar e criar si
 
 Clique em “Criar sistema de arquivos”, defina o nome, selecione sua VPC e clique em “Personalizar”.
 
-![Criar EFS: Nome e VPC](assets/imagem27.png)
+![Criar EFS: Nome e VPC](assests/EFS/CriarEfs.png)
 
 ---
 
@@ -270,7 +270,7 @@ Clique em “Criar sistema de arquivos”, defina o nome, selecione sua VPC e cl
 - **Performance:** Escolha “Uso geral” para garantir baixa latência em aplicações web como o WordPress.
 - **Tag:** Adicione uma tag com seu nome para facilitar a identificação e controle do recurso.
 
-![Etapa 1 EFS](assets/imagem28.png)
+![Etapa 1 EFS](assests/EFS/Etapa1EFS.png)
 
 ---
 
@@ -278,7 +278,7 @@ Clique em “Criar sistema de arquivos”, defina o nome, selecione sua VPC e cl
 
 Selecione a VPC correta e altere os grupos de segurança para utilizar o grupo de segurança do EFS que você criou anteriormente. Isso garante que apenas as instâncias EC2 autorizadas possam montar o EFS.
 
-![Etapa 2 EFS - Rede e SG](assets/imagem29.png)
+![Etapa 2 EFS - Rede e SG](assests/EFS/Etapa2EFS.png)
 
 ---
 
@@ -286,7 +286,7 @@ Selecione a VPC correta e altere os grupos de segurança para utilizar o grupo d
 
 Nesta etapa, apenas clique em “Next” para prosseguir, pois as configurações padrão normalmente já atendem ao cenário.
 
-![Etapa 3 EFS](assets/imagem30.png)
+![Etapa 3 EFS](assests/EFS/Etapa3EFS.png)
 
 ---
 
@@ -294,7 +294,7 @@ Nesta etapa, apenas clique em “Next” para prosseguir, pois as configuraçõe
 
 Revise as configurações e clique em “Criar sistema de arquivos”.
 
-![Criar EFS](assets/imagem31.png)
+![Criar EFS](assests/EFS/Etapa4EFS.png)
 
 ---
 
@@ -302,4 +302,6 @@ Revise as configurações e clique em “Criar sistema de arquivos”.
 
 Aguarde até que o status do EFS mude para “Disponível” para começar a utilizá-lo.
 
-![EFS sendo criado](assets/imagem32.png)
+![EFS sendo criado](assests/EFS/EFSCRIADO.png)
+
+---
