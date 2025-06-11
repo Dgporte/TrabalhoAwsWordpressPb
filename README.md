@@ -336,6 +336,80 @@ Na tela de criação, preencha os seguintes campos:
 
 ---
 
+## 35. Página Principal do RDS
+
+Esta é a página inicial do serviço Amazon RDS, onde você pode criar e gerenciar bancos de dados relacionais.
+
+![Página Principal RDS](assests/RDS/Page1RDS.png)
+
+---
+
+## 36. Escolha do MySQL e Versão
+
+Selecione o mecanismo MySQL, pois o WordPress é otimizado para funcionar com MySQL.  
+Escolha sempre a versão mais recente disponível para garantir mais segurança, desempenho e compatibilidade com plugins modernos.
+
+![Escolher MySQL e Versão](assests/RDS/Page2RDS.png)
+
+---
+
+## 37. Modelo de Uso: Nível Gratuito
+
+Na etapa de modelo, escolha o “Nível gratuito” para aproveitar os benefícios da camada gratuita da AWS.  
+**Por quê?**  
+O nível gratuito permite testar e aprender sem custos adicionais, sendo perfeito para ambientes de estudo e desenvolvimento.
+
+![Modelo Nível Gratuito](assests/RDS/Page3RDS.png)
+
+---
+
+## 38. Configuração do Banco de Dados
+
+Defina um identificador para o banco (ex: `wordpress-db`), um nome de usuário (“admin”, por exemplo) e uma senha forte.  
+**Por quê?**  
+Essas credenciais serão usadas pelo WordPress para conectar ao banco de dados, então devem ser seguras e facilmente identificáveis no seu ambiente.
+
+![Configuração do Banco](assests/RDS/Page4RDS.png)
+
+---
+
+## 39. Configuração da Instância
+
+Escolha a classe de instância `db.t3.micro`.  
+**Por quê?**  
+Esse tipo de instância é elegível ao nível gratuito e está disponível para contas novas ou de teste, sendo suficiente para ambientes de aprendizado ou baixo volume de acessos.
+
+![Configuração Instância](assests/RDS/Page5RDS.png)
+
+---
+
+## 40. Configuração de Rede e VPC
+
+- **VPC:** Selecione a VPC que você criou anteriormente para isolar o ambiente.
+- **Grupo de sub-redes:** Escolha o grupo de sub-redes (privadas) criado especialmente para o RDS, garantindo que o banco não fique exposto à internet.
+- **Grupo de segurança:** Selecione o grupo de segurança do RDS, permitindo acesso apenas das instâncias EC2 (backend do WordPress).
+
+**Por quê?**  
+Assim, o banco de dados fica protegido em subnets privadas, acessível apenas pelas instâncias EC2 autorizadas.
+
+![Configuração Rede e VPC](assests/RDS/Page6RDS.png)
+
+---
+
+## 41. Configurações Adicionais
+
+Mais abaixo, em "Configurações adicionais", defina o nome do banco de dados (por exemplo, `wordpress`).  
+Isso facilita a configuração do WordPress posteriormente, pois saberá exatamente o nome do banco a ser utilizado.
+
+![Configurações Adicionais - Nome do Banco](assests/RDS/Page7RDS.png)
+
+---
+
+## 42. Visualizando o Banco Criado
+
+Após a criação, você poderá visualizar e monitorar o banco de dados na tela inicial do RDS.
+
+![Banco RDS Criado](assests/RDS/Page8RDS.png)
 **Resumo dos passos:**  
 Essas configurações garantem que todas as instâncias nas subnets privadas possam acessar a internet de forma segura e controlada, sem ficarem expostas diretamente a acessos externos.
 
