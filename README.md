@@ -1,4 +1,60 @@
-# Passo a Passo: Criando VPC, Subnets e Grupos de Segurança na AWS
+# Projeto: Infraestrutura WordPress com Docker na AWS (EC2, RDS, EFS, Auto Scaling e Load Balancer)
+
+Este projeto ensina como criar uma infraestrutura escalável e de alta disponibilidade para rodar o WordPress em containers Docker na AWS, utilizando serviços como EC2, RDS (MySQL), EFS para armazenamento compartilhado, Auto Scaling para elasticidade e Load Balancer para distribuição de tráfego.
+
+## Índice
+
+- [1. Página Inicial da AWS](#1-página-inicial-da-aws)
+- [2. Acessando o Serviço VPC](#2-acessando-o-serviço-vpc)
+- [3. Página da VPC](#3-página-da-vpc)
+- [4. Criação da VPC – Configuração do CIDR](#4-criação-da-vpc--configuração-do-cidr)
+- [5. Criação da Subnet](#5-criação-da-subnet)
+- [6. Seleção da VPC ao criar Subnet](#6-seleção-da-vpc-ao-criar-subnet)
+- [7. Configuração de Subnet](#7-configuração-de-subnet)
+- [8. Criação de Subnets em us-east-1b](#8-criação-de-subnets-em-us-east-1b)
+- [9. Criação de Subnets em us-east-1d](#9-criação-de-subnets-em-us-east-1d)
+- [10. Criando Grupos de Segurança](#10-criando-grupos-de-segurança)
+- [11. Página de Criação de Grupo de Segurança](#11-página-de-criação-de-grupo-de-segurança)
+- [12. Grupo de Segurança da EC2](#12-grupo-de-segurança-da-ec2)
+- [13. Grupo de Segurança do Load Balancer](#13-grupo-de-segurança-do-load-balancer)
+- [14. Grupo de Segurança do RDS](#14-grupo-de-segurança-do-rds)
+- [15. Grupo de Segurança do EFS](#15-grupo-de-segurança-do-efs)
+- [16. Página da Tabela de Rotas](#16-página-da-tabela-de-rotas)
+- [17. Página para Criar Tabela de Rotas](#17-página-para-criar-tabela-de-rotas)
+- [18. Criando Tabela de Rotas Pública](#18-criando-tabela-de-rotas-pública)
+- [19. Criando Tabela de Rotas Privada](#19-criando-tabela-de-rotas-privada)
+- [20. Associando Subnets Públicas à Tabela de Rotas Pública](#20-associando-subnets-públicas-à-tabela-de-rotas-pública)
+- [21. Associando Subnets Privadas à Tabela de Rotas Privada](#21-associando-subnets-privadas-à-tabela-de-rotas-privada)
+- [22. Página do Gateway de Internet](#22-página-do-gateway-de-internet)
+- [23. Criando o Gateway de Internet](#23-criando-o-gateway-de-internet)
+- [24. Por que criar um EFS?](#24-por-que-criar-um-efs)
+- [25. Página Principal do EFS](#25-página-principal-do-efs)
+- [26. Criando um novo EFS](#26-criando-um-novo-efs)
+- [27. Etapa 1 – Configurações Gerais](#27-etapa-1--configurações-gerais)
+- [28. Etapa 2 – Rede](#28-etapa-2--rede)
+- [29. Etapa 3 – Configurações Avançadas](#29-etapa-3--configurações-avançadas)
+- [30. Etapa 4 – Criar o EFS](#30-etapa-4--criar-o-efs)
+- [31. Aguardando a Criação](#31-aguardando-a-criação)
+- [32. Por que criar um NAT Gateway?](#32-por-que-criar-um-nat-gateway)
+- [33. Página do NAT Gateway](#33-página-do-nat-gateway)
+- [34. Página de Criação do NAT Gateway](#34-página-de-criação-do-nat-gateway)
+- [35. Página Principal do RDS](#35-página-principal-do-rds)
+- [36. Escolha do MySQL e Versão](#36-escolha-do-mysql-e-versão)
+- [37. Modelo de Uso: Nível Gratuito](#37-modelo-de-uso-nível-gratuito)
+- [38. Configuração do Banco de Dados](#38-configuração-do-banco-de-dados)
+- [39. Configuração da Instância](#39-configuração-da-instância)
+- [40. Configuração de Rede e VPC](#40-configuração-de-rede-e-vpc)
+- [41. Configurações Adicionais](#41-configurações-adicionais)
+- [42. Visualizando o Banco Criado](#42-visualizando-o-banco-criado)
+- [Passo a Passo: Criando e Configurando a Instância EC2 para WordPress](#passo-a-passo-criando-e-configurando-a-instância-ec2-para-wordpress)
+- [49. Instância EC2 Criada](#49-instância-ec2-criada)
+- [Passo a Passo: Criando um Grupo de Auto Scaling na AWS](#passo-a-passo-criando-um-grupo-de-auto-scaling-na-aws)
+- [60. Verificando o Grupo de Auto Scaling](#60-verificando-o-grupo-de-auto-scaling)
+- [Passo a Passo: Criando um Grupo de Destino para o Load Balancer](#passo-a-passo-criando-um-grupo-de-destino-para-o-load-balancer)
+- [65. Grupo de Destino Criado](#65-grupo-de-destino-criado)
+- [Passo a Passo: Criando o Load Balancer para o WordPress](#passo-a-passo-criando-o-load-balancer-para-o-wordpress)
+- [72. WordPress rodando pelo Load Balancer](#72-wordpress-rodando-pelo-load-balancer)
+
 
 ## 1. Página Inicial da AWS
 
@@ -758,3 +814,71 @@ Após a criação, você poderá visualizar o grupo de destino na tela principal
 ![Grupo de Destino Criado](assests/GRUPODEDESTINO/Page5GD.png)
 
 ---
+
+# Passo a Passo: Criando o Load Balancer para o WordPress
+
+## 66. O que é um Load Balancer?
+
+O **Load Balancer** (balanceador de carga) é um serviço que distribui automaticamente o tráfego de entrada entre várias instâncias EC2, aumentando a disponibilidade, escalabilidade e tolerância a falhas de sua aplicação. Ele garante que, mesmo que uma instância falhe, o site continue acessível.
+
+---
+
+## 67. Página Principal do Load Balancer
+
+Esta é a tela inicial do serviço. Clique em **“Criar load balancer”** para começar.
+
+![Página Principal Load Balancer](assests/LOADBALANCER/Page1LD.png)
+
+---
+
+## 68. Escolhendo o tipo: Application Load Balancer (ALB)
+
+Na próxima tela, selecione **“Application Load Balancer (ALB)”**.
+
+**Por que ALB?**  
+O ALB é ideal para aplicações web porque trabalha na camada 7 (HTTP/HTTPS), permitindo roteamento avançado, balanceamento inteligente e suporte a múltiplos domínios e caminhos. É mais flexível e indicado para aplicações como WordPress.
+
+![Escolher ALB](assests/LOADBALANCER/Page2LD.png)
+
+---
+
+## 69. Configuração Básica
+
+- **Nome:** Defina um nome para seu ALB.
+- **Voltado para Internet:** Marque como internet-facing, pois queremos que o WordPress seja acessível publicamente.
+- **IP:** Escolha IPv4 (mais comum e compatível).
+- **VPC:** Selecione a VPC criada para seu projeto.
+- **Subnets:** Escolha as duas subnets públicas que você criou.  
+  **Por quê?**  
+  Isso garante alta disponibilidade: se uma zona de disponibilidade falhar, outra continua atendendo.
+
+![Configuração Básica ALB](assests/LOADBALANCER/Page3LD.png)
+
+---
+
+## 70. Grupo de Segurança e Grupo de Destino
+
+- **Grupo de Segurança:** Selecione o grupo de segurança criado para o Load Balancer, permitindo acesso HTTP/HTTPS.
+- **Grupo de Destino:** Escolha o grupo de destino que você criou. O ALB enviará o tráfego para as instâncias registradas neste grupo.
+
+![Segurança e Grupo de Destino](assests/LOADBALANCER/Page4LD.png)
+
+---
+
+## 71. Obtendo o DNS do Load Balancer
+
+Após criar o ALB, pegue o **“Nome DNS”** exibido na tela.  
+Para acessar o WordPress, basta colar este endereço no navegador precedido de **http://**.
+
+**Por que usar o DNS do ALB?**  
+O DNS é o endereço público do seu Load Balancer, que encaminha as requisições para as instâncias EC2 rodando o WordPress. Ele é dinâmico, tolerante a falhas e pode ser usado diretamente ou apontado em um domínio personalizado.
+
+![Nome DNS do ALB](assests/LOADBALANCER/Page5LD.png)
+
+---
+
+## 72. WordPress rodando pelo Load Balancer
+
+Acesse o endereço DNS do ALB no navegador para ver seu site WordPress funcionando com alta disponibilidade e balanceamento de carga!
+
+![WordPress no ALB](assests/LOADBALANCER/Page6LD.png)
