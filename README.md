@@ -190,3 +190,31 @@ A tabela de rotas privada é destinada às subnets privadas, que não devem ter 
 ![Tabela de Rotas Privada](assests/TABELAROTAS/TabelaRotasPrivada.png)
 
 ---
+
+## 20. Associando Subnets Públicas à Tabela de Rotas Pública
+
+Selecione a tabela de rotas pública e clique na aba “Associações de sub-rede”, depois em “Editar associações de sub-rede”.
+
+![Editar Associações Tabela Pública](assests/ASSOCIACAODESUBNET/ClicarAssociacaoDeSubNetPublica.png)
+
+---
+
+Na página de associações da tabela pública, selecione as subnets públicas criadas anteriormente (ex: `10.0.1.0/25` e `10.0.1.128/25`).  
+Assim, estas subnets terão acesso à internet conforme a rota configurada para o Internet Gateway.
+
+![Selecionar Subnets Públicas](assests/ASSOCIACAODESUBNET/AssociacaoSubNetPublica.png)
+
+---
+
+## 21. Associando Subnets Privadas à Tabela de Rotas Privada
+
+Agora, selecione a tabela de rotas privada, clique em “Associações de sub-rede” e em “Editar associações de sub-rede”.
+
+![Editar Associações Tabela Privada](assests/ASSOCIACAODESUBNET/ClicarAssociacaoDeSubNetPrivada.png)
+
+---
+
+Na página de associações da tabela privada, selecione as subnets privadas criadas (`10.0.2.0/25` e `10.0.2.128/25`).  
+Dessa forma, essas subnets utilizarão o NAT Gateway para acesso à internet apenas para saída, mantendo os recursos internos protegidos de acessos externos diretos.
+
+![Selecionar Subnets Privadas](assests/ASSOCIACAODESUBNET/AssociacaoSubNetPrivada.png)
