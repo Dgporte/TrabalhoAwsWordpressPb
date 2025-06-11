@@ -218,3 +218,24 @@ Na página de associações da tabela privada, selecione as subnets privadas cri
 Dessa forma, essas subnets utilizarão o NAT Gateway para acesso à internet apenas para saída, mantendo os recursos internos protegidos de acessos externos diretos.
 
 ![Selecionar Subnets Privadas](assests/ASSOCIACAODESUBNET/AssociacaoSubNetPrivada.png)
+
+---
+
+## 22. Página do Gateway de Internet
+
+Esta é a página onde você pode visualizar e gerenciar os Internet Gateways da sua VPC. Clique em "Criar gateway de internet" para adicionar um novo gateway à sua infraestrutura.
+
+![Página Gateway de Internet](assests/GATEWAYINTERNET/PageGatewayInternet.png)
+
+---
+
+## 23. Criando o Gateway de Internet
+
+Na página de criação, defina um nome para facilitar a identificação do recurso.
+
+**Por que criar um Internet Gateway?**  
+O Internet Gateway é o componente responsável por permitir que recursos em subnets públicas da sua VPC se comuniquem com a internet. Ele serve como a porta de entrada e saída do tráfego externo, sendo fundamental para instâncias EC2 públicas, Load Balancers e outros serviços que precisam ser acessados a partir da internet.
+
+![Criação do Gateway de Internet](assests/GATEWAYINTERNET/PageCriarGatewayInternet.png)
+
+---
