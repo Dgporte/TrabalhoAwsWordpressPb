@@ -12,7 +12,7 @@ Ao acessar a AWS, esta é a página principal onde você pode buscar por todos o
 
 No canto superior direito, digite "VPC" para acessar o serviço de redes virtuais privadas.
 
-![Busca por VPC](assets/imagem2.png)
+![Busca por VPC](assests/VPC/DigitarVpc.png)
 
 ---
 
@@ -20,7 +20,7 @@ No canto superior direito, digite "VPC" para acessar o serviço de redes virtuai
 
 Aqui está a página inicial do serviço VPC. Clique em "Criar VPC" para iniciar a configuração.
 
-![Página da VPC](assets/imagem3.png)
+![Página da VPC](assests/VPC/PageCriarVpc.png)
 
 ---
 
@@ -30,7 +30,7 @@ Ao criar a VPC, insira o bloco CIDR IPv4 como `10.0.0.0/16`.
 **Por quê?**  
 Esse bloco permite até 65.536 endereços IP, oferecendo flexibilidade para criar várias subnets públicas e privadas dentro da mesma VPC.
 
-![Criação da VPC - CIDR](assets/imagem4.png)
+![Criação da VPC - CIDR](assests/VPC/CriaçãodaVpc.png)
 
 ---
 
@@ -38,7 +38,7 @@ Esse bloco permite até 65.536 endereços IP, oferecendo flexibilidade para cria
 
 Acesse a página de Subnets e clique em "Criar Sub-rede".
 
-![Página Subnet](assets/imagem5.png)
+![Página Subnet](assests/SUBNET/PageCriarSubNet.png)
 
 ---
 
@@ -46,7 +46,7 @@ Acesse a página de Subnets e clique em "Criar Sub-rede".
 
 Durante a criação da subnet, selecione a sua VPC recém-criada.
 
-![Selecionar VPC](assets/imagem6.png)
+![Selecionar VPC](assests/SUBNET/SelecionarVpcSubNet.png)
 
 ---
 
@@ -54,7 +54,7 @@ Durante a criação da subnet, selecione a sua VPC recém-criada.
 
 Após selecionar a VPC, configure as subnets conforme necessário.
 
-![Configuração de Subnet](assets/imagem7.png)
+![Configuração de Subnet](assests/SUBNET/OpcoesCriarSubNet.png)
 
 ---
 
@@ -69,7 +69,7 @@ Crie duas subnets na zona de disponibilidade `us-east-1b`:
 - O bloco `/25` separa cada subnet em 128 endereços IP, suficiente para recursos públicos/privados.
 - Ambas devem estar na mesma zona para garantir alta disponibilidade e facilitar comunicação local.
 
-![Subnets us-east-1b](assets/imagem8.png)
+![Subnets us-east-1b](assests/SUBNET/CriacaoSubNetPublicaPrivada01.png)
 
 ---
 
@@ -84,7 +84,7 @@ Repita o processo para a zona `us-east-1d`:
 - O bloco começa em 128, não sobrepondo endereços da subnet anterior.
 - Ambas na mesma zona para redundância e tolerância a falhas.
 
-![Subnets us-east-1d](assets/imagem9.png)
+![Subnets us-east-1d](assests/SUBNET/CriacaoSubNetPublicaPrivada02.png)
 
 ---
 
@@ -92,7 +92,7 @@ Repita o processo para a zona `us-east-1d`:
 
 Clique em "Criar grupo de segurança" para definir regras de acesso.
 
-![Criar Grupo de Segurança](assets/imagem10.png)
+![Criar Grupo de Segurança](assests/GRUPODESEGURANCA/PageGupoDeSeguranca.png)
 
 ---
 
@@ -100,7 +100,7 @@ Clique em "Criar grupo de segurança" para definir regras de acesso.
 
 Aqui você define nome, descrição e regras de entrada/saída.
 
-![Página Grupo de Segurança](assets/imagem11.png)
+![Página Grupo de Segurança](assests/GRUPODESEGURANCA/PageCriarGrupoSeguranca.png)
 
 ---
 
@@ -115,7 +115,7 @@ Aqui você define nome, descrição e regras de entrada/saída.
 **Justificativa:**  
 Separação clara de acessos administrativos (SSH), público (HTTP via LB) e testes.
 
-![SG EC2](assets/imagem12.png)
+![SG EC2](assests/GRUPODESEGURANCA/GSEC2.png)
 
 ---
 
@@ -127,7 +127,7 @@ Separação clara de acessos administrativos (SSH), público (HTTP via LB) e tes
 **Justificativa:**  
 Permite que o LB atenda requisições de qualquer origem e encaminhe para as instâncias EC2.
 
-![SG Load Balancer](assets/imagem13.png)
+![SG Load Balancer](assests/GRUPODESEGURANCA/GSLOADBALANCER.png)
 
 ---
 
@@ -139,7 +139,7 @@ Permite que o LB atenda requisições de qualquer origem e encaminhe para as ins
 **Justificativa:**  
 Restringe o acesso ao banco de dados, permitindo apenas que as instâncias EC2 possam conectar.
 
-![SG RDS](assets/imagem14.png)
+![SG RDS](assests/GRUPODESEGURANCA/GSRDS.png)
 
 ---
 
@@ -151,4 +151,4 @@ Restringe o acesso ao banco de dados, permitindo apenas que as instâncias EC2 p
 **Justificativa:**  
 Somente as instâncias EC2 podem montar o EFS, garantindo segurança ao sistema de arquivos.
 
-![SG EFS](assets/imagem15.png)
+![SG EFS](assests/GRUPODESEGURANCA/GSEFS.png)
