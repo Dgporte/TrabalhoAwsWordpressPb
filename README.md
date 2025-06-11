@@ -4,7 +4,7 @@
 
 Ao acessar a AWS, esta é a página principal onde você pode buscar por todos os serviços.
 
-![Página Principal AWS](assets/PAGEPRINCIPAL/PagePrincipal.png)
+![Página Principal AWS](assests/PAGEPRINCIPAL/PagePrincipal.png)
 
 ---
 
