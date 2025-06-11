@@ -701,3 +701,60 @@ Após a criação, você poderá ver e gerenciar seu grupo de Auto Scaling na te
 ![Auto Scaling Criado](assests/AUTOSCALING/Page13AT.png)
 
 ---
+
+# Passo a Passo: Criando um Grupo de Destino para o Load Balancer
+
+## 61. O que é um Grupo de Destino?
+
+O **Grupo de Destino** (Target Group) é um recurso do Load Balancer da AWS que define para onde o tráfego deve ser encaminhado. Ele agrupa as instâncias EC2 (ou outros recursos) que irão receber o tráfego balanceado. Assim, o Load Balancer pode monitorar a saúde das instâncias e distribuir requisições apenas para aquelas que estão saudáveis.
+
+---
+
+## 62. Página Principal do Grupo de Destino
+
+Esta é a tela inicial de grupos de destino. Clique em **“Criar grupo de destino”** para começar.
+
+![Página Principal Grupo de Destino](assests/GRUPODEDESTINO/Page1GD.png)
+
+---
+
+## 63. Etapa 1 – Configurações Iniciais
+
+- **Tipo de destino:** Selecione “Instância”. Assim, o tráfego do Load Balancer será enviado diretamente para as instâncias EC2.
+- **Demais opções:** Deixe as opções padrão, pois elas já atendem à maioria dos cenários de aplicações web.
+
+![Configuração Inicial Grupo de Destino](assests/GRUPODEDESTINO/Page2GD.png)
+
+---
+
+- **VPC:** Escolha a VPC que você criou para o projeto, garantindo isolamento e roteamento correto.
+- **Verificação de integridade (Health Check Path):**  
+  - **Caminho:** Defina o caminho para verificação, por exemplo `/healthcheck` (é uma boa prática para saber se a aplicação está rodando).
+  - **Limite íntegro:** 2 (quantas respostas consecutivas de sucesso para considerar íntegro).
+  - **Limite não íntegro:** 2 (quantas falhas para considerar a instância não íntegra).
+  - **Tempo limite:** 5 segundos (após esse tempo, uma verificação é considerada falha).
+  - **Intervalo:** 15 segundos (tempo entre cada verificação).
+  
+Esses parâmetros permitem detecção rápida e precisa de instâncias saudáveis, encaminhando o tráfego apenas para quem realmente está funcionando.
+
+![Verificação de Integridade](assests/GRUPODEDESTINO/Page3GD.png)
+
+---
+
+## 64. Etapa 2 – Instâncias
+
+Nesta etapa, você verá as instâncias EC2 disponíveis. Não é necessário selecionar manualmente agora, pois o Auto Scaling irá registrar/desregistrar instâncias automaticamente conforme necessário.
+
+Clique em **“Criar grupo de destino”** para finalizar.
+
+![Selecionar Instâncias](assests/GRUPODEDESTINO/Page4GD.png)
+
+---
+
+## 65. Grupo de Destino Criado
+
+Após a criação, você poderá visualizar o grupo de destino na tela principal. Ele estará pronto para ser associado ao Load Balancer e ao Auto Scaling.
+
+![Grupo de Destino Criado](assests/GRUPODEDESTINO/Page5GD.png)
+
+---
