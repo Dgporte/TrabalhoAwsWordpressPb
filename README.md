@@ -152,3 +152,41 @@ Restringe o acesso ao banco de dados, permitindo apenas que as instâncias EC2 p
 Somente as instâncias EC2 podem montar o EFS, garantindo segurança ao sistema de arquivos.
 
 ![SG EFS](assests/GRUPODESEGURANCA/GSEFS.png)
+
+---
+
+## 16. Página da Tabela de Rotas
+
+Aqui está a página onde você pode visualizar e gerenciar as tabelas de rotas da sua VPC. Clique em "Criar tabela de rotas" para iniciar o processo.
+
+![Página Tabela de Rotas](assests/TABELAROTAS/PageTabelaRotas.png)
+
+---
+
+## 17. Página para Criar Tabela de Rotas
+
+Nesta tela você define o nome, descrição e associa a tabela à sua VPC.
+
+![Criar Tabela de Rotas](assests/TABELAROTAS/PageCriarTabelaRotas.png)
+
+---
+
+## 18. Criando Tabela de Rotas Pública
+
+Crie uma tabela de rotas pública.  
+**Por quê?**  
+A tabela de rotas pública é fundamental para subnets que precisam acessar a internet diretamente. Ao associar esta tabela às subnets públicas, você poderá adicionar uma rota apontando para o Internet Gateway, permitindo que recursos nessas subnets sejam acessados pela internet (por exemplo, instâncias EC2 que precisam servir páginas web ou Load Balancers públicos).
+
+![Tabela de Rotas Pública](assests/TABELAROTAS/TabelaRotasPublica.png)
+
+---
+
+## 19. Criando Tabela de Rotas Privada
+
+Crie também uma tabela de rotas privada.  
+**Por quê?**  
+A tabela de rotas privada é destinada às subnets privadas, que não devem ter acesso direto à internet. Em vez disso, o tráfego de saída dessas subnets deve passar por um NAT Gateway (que está em uma subnet pública), garantindo maior segurança para recursos internos, como bancos de dados ou aplicações internas.
+
+![Tabela de Rotas Privada](assests/TABELAROTAS/TabelaRotasPrivada.png)
+
+---
