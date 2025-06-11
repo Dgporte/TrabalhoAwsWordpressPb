@@ -581,8 +581,123 @@ docker run -d --name wordpress \
 
 ![User Data](assests/EC2/Page8EC2.png)
 
-## 8. Instância EC2 Criada
+## 49. Instância EC2 Criada
 
 Após a execução, você verá sua instância EC2 criada e pronta para uso, rodando o WordPress conforme as configurações acima.
 
 ![EC2 Criada](assests/EC2/Page9EC2.png)
+
+---
+
+# Passo a Passo: Criando um Grupo de Auto Scaling na AWS
+
+## 50. O que é o Auto Scaling?
+
+O **Auto Scaling** é um serviço da AWS que ajusta automaticamente a quantidade de instâncias EC2 em seu ambiente de acordo com a demanda (carga de trabalho). Ele ajuda a garantir alta disponibilidade, desempenho e otimização de custos, aumentando ou diminuindo o número de servidores conforme necessário sem intervenção manual.
+
+---
+
+## 51. Página Principal do Auto Scaling
+
+Aqui está a página inicial do Auto Scaling. Clique em **“Criar grupo de Auto Scaling”** para iniciar a configuração.
+
+![Página Principal Auto Scaling](assests/AUTOSCALING/Page1AT.png)
+
+---
+
+## 52. Etapa 1 – Nome e Modelo de Execução
+
+- **Nome:** Defina um nome para identificar seu grupo de Auto Scaling.
+- **Modelo de Execução:** Escolha um modelo de execução existente ou crie um novo, que irá definir a configuração das instâncias a serem lançadas.
+
+![Nome e Modelo de Execução](assests/AUTOSCALING/Page2AT.png)
+
+---
+
+## 53. Criando o Modelo de Execução
+
+Se não tiver um modelo pronto, clique para criar um novo:
+
+- **Nome e Descrição:** Defina um nome e uma descrição para o template.
+- **AMI (Imagem):** Selecione a mesma AMI utilizada na criação da EC2 (neste caso, Ubuntu), garantindo compatibilidade de configuração.
+
+
+![Criar Modelo de Execução](assests/AUTOSCALING/Page3AT.png)
+  
+- **Tipo de Instância:** Selecione `t2.micro`, elegível ao nível gratuito, ideal para testes e custos reduzidos.
+- **Par de Chaves:** Escolha o par de chaves SSH que você criou para acessar as máquinas.
+- **Sub-rede:** Selecione a subnet privada 02 criada anteriormente.
+- **Grupo de Segurança:** Escolha o grupo de segurança utilizado para o Load Balancer, permitindo o tráfego necessário para o balanceamento.
+
+ ![Criar Modelo de Execução](assests/AUTOSCALING/Page4AT.png)
+
+- **Tags de Recurso:** Adicione as mesmas tags usadas na EC2. Tags são fundamentais para controle, automação e políticas internas da conta.
+
+ ![Criar Modelo de Execução](assests/AUTOSCALING/Page5AT.png)
+-
+- **User Data:** Coloque o mesmo script de user data utilizado na EC2. Isso garante que toda instância criada pelo Auto Scaling já suba pronta para rodar o WordPress, montar o EFS e conectar ao banco.
+  
+![Criar Modelo de Execução](assests/AUTOSCALING/Page6AT.png)
+
+---
+
+## 54. Etapa 2 – Rede e Subnets
+
+- **VPC:** Escolha a VPC criada anteriormente para isolar seu ambiente.
+- **Subnets:** Selecione as duas subnets privadas que você criou (ex: `10.0.2.0/25` e `10.0.2.128/25`). Isso garante alta disponibilidade entre zonas de disponibilidade.
+
+![VPC e Subnets](assests/AUTOSCALING/Page7AT.png)
+
+---
+
+## 55. Etapa 3 – Balanceador de Carga
+
+- **Anexar a um Balanceador de Carga Existente:** Selecione esta opção para que suas instâncias sejam automaticamente registradas em um Load Balancer.
+- **Grupo de Destino:** Escolha o grupo de destino do Load Balancer que você irá criar (ou já criou). Isso garante que o tráfego externo seja distribuído entre as instâncias do Auto Scaling.
+
+![Balanceador de Carga](assests/AUTOSCALING/Page8AT.png)
+
+---
+
+## 56. Etapa 4 – Capacidade e Políticas
+
+- **Capacidade Desejada:** 1 (quantidade inicial de instâncias).
+- **Capacidade Mínima:** 1 (garante que sempre haverá pelo menos uma instância rodando).
+- **Capacidade Máxima:** 2 (limita o crescimento automático para dois servidores, ideal para ambientes de teste).
+- **Política de Dimensionamento:** Escolha o monitoramento por objetivo. Isso permite que o Auto Scaling monitore métricas como CPU e ajuste o número de instâncias automaticamente.
+
+![Capacidade e Políticas](assests/AUTOSCALING/Page9AT.png)
+
+---
+
+## 57. Etapa 5 – Notificações
+
+- **Notificações:** Esta etapa é opcional. Você pode configurar notificações via email ou SNS para ser avisado sobre mudanças no grupo de Auto Scaling.
+
+![Notificações](assests/AUTOSCALING/Page10AT.png)
+
+---
+
+## 58. Etapa 6 – Etiqueta
+
+- **Etiqueta:** Coloque o nome que você definiu na etapa 1 para facilitar a identificação do seu grupo.
+
+![Etiqueta](assests/AUTOSCALING/Page11AT.png)
+
+---
+
+## 59. Revisar e Criar
+
+Revise todas as configurações e clique em **“Criar grupo de Auto Scaling”**.
+
+![Revisar e Criar](assests/AUTOSCALING/Page12AT.png)
+
+---
+
+## 60. Verificando o Grupo de Auto Scaling
+
+Após a criação, você poderá ver e gerenciar seu grupo de Auto Scaling na tela principal.
+
+![Auto Scaling Criado](assests/AUTOSCALING/Page13AT.png)
+
+---
