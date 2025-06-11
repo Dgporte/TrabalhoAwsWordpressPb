@@ -239,3 +239,67 @@ O Internet Gateway é o componente responsável por permitir que recursos em sub
 ![Criação do Gateway de Internet](assests/GATEWAYINTERNET/PageCriarGatewayInternet.png)
 
 ---
+
+## 24. Por que criar um EFS?
+
+O Amazon EFS (Elastic File System) permite que várias instâncias EC2 compartilhem o mesmo sistema de arquivos simultaneamente, sendo ideal para aplicações como o WordPress, onde é necessário persistir arquivos (uploads, plugins, temas) entre múltiplas instâncias em um ambiente escalável.
+
+---
+
+## 25. Página Principal do EFS
+
+Esta é a página inicial do serviço EFS, onde você pode visualizar e criar sistemas de arquivos.
+
+![Página Principal EFS](assets/imagem26.png)
+
+---
+
+## 26. Criando um novo EFS
+
+Clique em “Criar sistema de arquivos”, defina o nome, selecione sua VPC e clique em “Personalizar”.
+
+![Criar EFS: Nome e VPC](assets/imagem27.png)
+
+---
+
+## 27. Etapa 1 – Configurações Gerais
+
+- **Regional:** O EFS é um serviço regional, garantindo alta disponibilidade entre zonas na mesma região.
+- **Backup automático:** Não habilitar nesta etapa, pois para ambientes de teste ou controle de custos, backups automáticos podem ser desnecessários.
+- **Gerenciamento de ciclo de vida:** Não habilite, ou defina como “Intermitente”, para ambientes com uso variável.
+- **Performance:** Escolha “Uso geral” para garantir baixa latência em aplicações web como o WordPress.
+- **Tag:** Adicione uma tag com seu nome para facilitar a identificação e controle do recurso.
+
+![Etapa 1 EFS](assets/imagem28.png)
+
+---
+
+## 28. Etapa 2 – Rede
+
+Selecione a VPC correta e altere os grupos de segurança para utilizar o grupo de segurança do EFS que você criou anteriormente. Isso garante que apenas as instâncias EC2 autorizadas possam montar o EFS.
+
+![Etapa 2 EFS - Rede e SG](assets/imagem29.png)
+
+---
+
+## 29. Etapa 3 – Configurações Avançadas
+
+Nesta etapa, apenas clique em “Next” para prosseguir, pois as configurações padrão normalmente já atendem ao cenário.
+
+![Etapa 3 EFS](assets/imagem30.png)
+
+---
+
+## 30. Etapa 4 – Criar o EFS
+
+Revise as configurações e clique em “Criar sistema de arquivos”.
+
+![Criar EFS](assets/imagem31.png)
+
+---
+
+## 31. Aguardando a Criação
+
+Aguarde até que o status do EFS mude para “Disponível” para começar a utilizá-lo.
+
+![EFS sendo criado](assets/imagem32.png)
