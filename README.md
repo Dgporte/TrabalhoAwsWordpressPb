@@ -414,3 +414,175 @@ Após a criação, você poderá visualizar e monitorar o banco de dados na tela
 Essas configurações garantem que todas as instâncias nas subnets privadas possam acessar a internet de forma segura e controlada, sem ficarem expostas diretamente a acessos externos.
 
 ---
+
+# Passo a Passo: Criando e Configurando a Instância EC2 para WordPress
+
+## 42. O que é a EC2?
+
+A Amazon EC2 (Elastic Compute Cloud) é o serviço de máquinas virtuais (instâncias) da AWS. Ela permite criar servidores sob demanda, com diferentes sistemas operacionais, tamanhos e configurações, para rodar aplicações como o WordPress.
+
+---
+
+## 43. Página Principal da EC2
+
+Esta é a página inicial do serviço EC2. Clique em “Executar instância” para criar uma nova máquina virtual.
+
+![Página Principal EC2](assests/EC2/Page1EC2.png)
+
+---
+
+## 44. Nome e Tags; Imagem da Aplicação
+
+- **Nome e Tags:** Insira um nome e as tags exigidas pela sua conta. Tags são essenciais para organização, controle de custos e políticas automáticas. Sem as tags obrigatórias, a criação pode falhar.
+- **Imagem da Aplicação:** Escolha a AMI (imagem de sistema operacional) de sua preferência. Neste exemplo, usamos o Ubuntu, pois é estável, popular e amplamente suportado.
+
+![Nome, Tags e AMI](assests/EC2/Page2EC2.png)
+
+---
+
+## 45. Tipo de Instância e Par de Chaves
+
+- **Tipo de Instância:** Selecione “t2.micro”, elegível ao nível gratuito da AWS, ideal para testes e ambientes pequenos.
+- **Par de Chaves:** Um par de chaves SSH é necessário para acessar a instância com segurança. Se já possui um, selecione-o; se não, clique para criar um novo. Baixe e guarde o arquivo `.pem` com segurança!
+
+![Tipo de Instância e Par de Chaves](assests/EC2/Page3EC2.png)
+
+---
+
+## 46. Configuração de Rede
+
+Clique em “Editar” para configurar rede e segurança.
+
+![Configurar Rede](assests/EC2/Page4EC2.png)
+
+---
+
+- **VPC:** Selecione a VPC que criamos anteriormente, garantindo isolamento e controle de tráfego.
+- **Sub-rede:** Escolha a subnet privada 01 (ex: `10.0.2.0/25`), garantindo que a instância não seja exposta à internet.
+- **Atribuição de IP público:** Desabilite, pois a instância está na subnet privada.
+- **Grupo de Segurança:** Selecione o grupo de segurança EC2 definido por você, permitindo apenas os acessos necessários.
+
+![Detalhes de Rede](assests/EC2/Page5EC2.png)
+
+---
+
+## 47. Pegando o Endpoint do Banco de Dados e DNS da EFS
+
+- **Endpoint do RDS:** Após criar o banco de dados, obtenha o endpoint (endereço DNS) na página de detalhes do RDS. Ele será usado pelo WordPress para se conectar ao banco.
+  ![Endpoint RDS](assests/EC2/Page6EC2.png)
+- **DNS da EFS:** Pegue o DNS do EFS na tela de detalhes do sistema de arquivos EFS. Ele será necessário para montar o volume compartilhado nas instâncias EC2.
+  ![DNS da EFS](assests/EC2/Page7EC2.png)
+
+---
+
+## 48. User Data – Script de Inicialização Automática
+
+No campo “User data”, adicione o script abaixo. Ele prepara o ambiente, instala Docker, MySQL client e NFS, monta o EFS, cria o banco WordPress se não existir, e inicia o contêiner WordPress apontando para o banco e o EFS:
+
+```bash
+#!/bin/bash
+apt-get update -y
+apt-get install -y docker.io mysql-client nfs-common
+systemctl start docker
+systemctl enable docker
+mkdir -p /mnt/efs
+mount -t nfs4 -o nfsvers=4.1 fs-0070a0c9ca7341265.efs.us-east-1.amazonaws.com:/ /mnt/efs
+docker pull wordpress:latest
+sleep 15
+DB_HOST="bancoprincipal.ce3yu8ycol1v.us-east-1.rds.amazonaws.com"
+DB_USER="admin"
+DB_PASS="admin1234"
+DB_NAME="bancoPrincipal"
+mysql -h $DB_HOST -u $DB_USER -p$DB_PASS -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+docker rm -f wordpress || true
+docker run -d --name wordpress \
+  -p 80:80 \
+  -e WORDPRESS_DB_HOST=$DB_HOST:3306 \
+  -e WORDPRESS_DB_USER=$DB_USER \
+  -e WORDPRESS_DB_PASSWORD=$DB_PASS \
+  -e WORDPRESS_DB_NAME=$DB_NAME \
+  -v /mnt/efs:/var/www/html/wp-content/uploads \
+  wordpress:latest
+```
+
+### Explicação Completa do Script
+
+- Atualiza o sistema e instala Docker, cliente MySQL e utilitário NFS.
+- Inicia e habilita o Docker para inicialização automática.
+- Cria o diretório para montar o EFS.
+- Monta o EFS usando o DNS do serviço.
+- Baixa a imagem mais recente do WordPress.
+- Aguarda 15 segundos para garantir que tudo esteja pronto.
+- Define variáveis de ambiente do banco de dados.
+- Cria o banco de dados caso ainda não exista.
+- Remove contêiner WordPress anterior, se houver.
+- Sobe um novo contêiner WordPress, conectando ao RDS e montando o EFS para uploads compartilhados.
+
+---
+
+#### **Linha a linha do User Data:**
+
+1. `apt-get update -y`
+   - Atualiza a lista de pacotes do sistema para garantir que as instalações sejam feitas com as últimas versões disponíveis.
+
+2. `apt-get install -y docker.io mysql-client nfs-common`
+   - Instala três pacotes:
+     - **docker.io:** Permite rodar containers Docker (como o WordPress).
+     - **mysql-client:** Cliente MySQL para interagir com o banco RDS.
+     - **nfs-common:** Utilitário para montar volumes NFS, necessário para o EFS.
+
+3. `systemctl start docker`
+   - Inicia o serviço Docker.
+
+4. `systemctl enable docker`
+   - Configura o Docker para iniciar automaticamente junto com o sistema.
+
+5. `mkdir -p /mnt/efs`
+   - Cria o diretório onde o EFS será montado.
+
+6. `mount -t nfs4 -o nfsvers=4.1 fs-0070a0c9ca7341265.efs.us-east-1.amazonaws.com:/ /mnt/efs`
+   - Monta o EFS usando NFS v4.1 no diretório criado, utilizando o DNS próprio do seu EFS.
+
+7. `docker pull wordpress:latest`
+   - Baixa a imagem mais atual do WordPress no Docker Hub.
+
+8. `sleep 15`
+   - Aguarda 15 segundos para garantir que todos os serviços estejam prontos antes de continuar.
+
+9. 
+   ```bash
+   DB_HOST="bancoprincipal.ce3yu8ycol1v.us-east-1.rds.amazonaws.com"
+   DB_USER="admin"
+   DB_PASS="admin1234"
+   DB_NAME="bancoPrincipal"
+   ```
+   - Define as variáveis de ambiente para acesso ao banco de dados RDS.
+
+10. `mysql -h $DB_HOST -u $DB_USER -p$DB_PASS -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"`
+    - Usa o cliente MySQL para criar o banco de dados no RDS, caso ele ainda não exista.
+
+11. `docker rm -f wordpress || true`
+    - Remove (força) qualquer container chamado "wordpress" que já esteja rodando, para evitar conflitos ao subir o novo container. O `|| true` garante que o script continua mesmo se não houver container rodando.
+
+12. 
+    ```bash
+    docker run -d --name wordpress \
+      -p 80:80 \
+      -e WORDPRESS_DB_HOST=$DB_HOST:3306 \
+      -e WORDPRESS_DB_USER=$DB_USER \
+      -e WORDPRESS_DB_PASSWORD=$DB_PASS \
+      -e WORDPRESS_DB_NAME=$DB_NAME \
+      -v /mnt/efs:/var/www/html/wp-content/uploads \
+      wordpress:latest
+    ```
+    - Sobe o container WordPress em modo destacado (`-d`), expondo a porta 80, passando as variáveis de configuração do banco e montando o EFS na pasta de uploads. Assim, arquivos enviados pelo WordPress ficam persistentes e compartilhados entre instâncias.
+
+---
+
+![User Data](assests/EC2/Page8EC2.png)
+
+## 8. Instância EC2 Criada
+
+Após a execução, você verá sua instância EC2 criada e pronta para uso, rodando o WordPress conforme as configurações acima.
+
+![EC2 Criada](assests/EC2/Page9EC2.png)
