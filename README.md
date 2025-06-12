@@ -542,12 +542,12 @@ apt-get install -y docker.io mysql-client nfs-common
 systemctl start docker
 systemctl enable docker
 mkdir -p /mnt/efs
-mount -t nfs4 -o nfsvers=4.1 fs-0070a0c9ca7341265.efs.us-east-1.amazonaws.com:/ /mnt/efs
+mount -t nfs4 -o nfsvers=4.1 ***:/ /mnt/efs
 docker pull wordpress:latest
 sleep 15
-DB_HOST="bancoprincipal.ce3yu8ycol1v.us-east-1.rds.amazonaws.com"
-DB_USER="admin"
-DB_PASS="admin1234"
+DB_HOST="***"
+DB_USER="***"
+DB_PASS="***"
 DB_NAME="bancoPrincipal"
 mysql -h $DB_HOST -u $DB_USER -p$DB_PASS -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
 docker rm -f wordpress || true
@@ -607,10 +607,10 @@ docker run -d --name wordpress \
 
 9. 
    ```bash
-   DB_HOST="bancoprincipal.ce3yu8ycol1v.us-east-1.rds.amazonaws.com"
-   DB_USER="admin"
-   DB_PASS="admin1234"
-   DB_NAME="bancoPrincipal"
+   DB_HOST="***"
+   DB_USER="***"
+   DB_PASS="***"
+   DB_NAME="***"
    ```
    - Define as variáveis de ambiente para acesso ao banco de dados RDS.
 
